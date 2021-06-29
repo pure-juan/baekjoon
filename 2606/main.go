@@ -16,7 +16,7 @@ func main() {
 	fmt.Scanln(&numOfEdges) // 컴퓨터의 갯수
 	fmt.Scanln(&numOfLinks) // 컴퓨터 쌍의 수
 	var graphs []Graph = make([]Graph, numOfEdges)
-	for i := 0; i < numOfLinks; i++ { // Link의 갯수 많큼 읽어오기
+	for i := 0; i < numOfLinks; i++ { // Link의 갯수 만큼 읽어오기
 		var firstEdge, secondEdge int       // 양방향이라 두곳 다 넣어주기
 		fmt.Scanln(&firstEdge, &secondEdge) // Link
 		graphs[firstEdge-1].links = append(graphs[firstEdge-1].links, secondEdge)
