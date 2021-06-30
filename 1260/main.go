@@ -33,9 +33,10 @@ func main() {
 
 	DFS(graphs, startFrom, &DFSVisited, &DFSArrived) // DFS
 
-	var queue []int = []int{}                                // 큐 생성
-	queue = append(queue, startFrom)                         // 큐에 기본 시작점 추가
-	BFS(graphs, startFrom, &BFSVisited, &BFSArrived, &queue) // BFS
+	var queue []int = []int{startFrom} // 큐 생성
+	for len(queue) > 0 {
+		BFS(graphs, &BFSVisited, &BFSArrived, &queue) // BFS
+	}
 
 	fmt.Println(strings.Join(DFSArrived, " ")) // 출력
 	fmt.Println(strings.Join(BFSArrived, " ")) // 출력
@@ -53,20 +54,17 @@ func DFS(graphs []Graph, edge int, visited *[]bool, arrived *[]string) { // DFS
 	}
 }
 
-func BFS(graphs []Graph, edge int, visited *[]bool, arrived *[]string, queue *[]int) { // BFS
-	(*visited)[edge-1] = true
-	(*arrived) = append(*arrived, strconv.Itoa(edge))
+func BFS(graphs []Graph, visited *[]bool, arrived *[]string, queue *[]int) { // BFS
+	edge := (*queue)[0] - 1
+	(*visited)[edge] = true
+	(*arrived) = append(*arrived, strconv.Itoa(edge+1))
 	(*queue) = (*queue)[1:len(*queue)]
 
-	var links = graphs[edge-1].links
+	var links = graphs[edge].links
 	for _, v := range links {
 		if !(*visited)[v-1] && !Contain(queue, v) {
 			(*queue) = append(*queue, v)
 		}
-	}
-
-	if len(*queue) > 0 {
-		BFS(graphs, (*queue)[0], visited, arrived, queue)
 	}
 }
 

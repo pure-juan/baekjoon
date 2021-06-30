@@ -1,4 +1,4 @@
-/*
+/**
  * https://www.acmicpc.net/problem/2606
  * 바이러스
  */
@@ -25,9 +25,9 @@ func main() {
 
 	var visited []bool = make([]bool, numOfEdges) // 방문 체크
 	var count int = 0                             // 갯수
-	DFSMain(graphs, &visited, &count)             // DFS
-	// BFSMain(graphs, &visited, &count) // BFS
-	fmt.Println(count - 1) // 출력
+	// DFSMain(graphs, &visited, &count)             // DFS
+	BFSMain(graphs, &visited, &count) // BFS
+	fmt.Println(count - 1)            // 출력
 }
 
 func DFSMain(graphs []Graph, visited *[]bool, count *int) { // DFS
@@ -47,8 +47,10 @@ func DFS(graphs []Graph, edge int, visited *[]bool, count *int) { // DFS
 }
 
 func BFSMain(graphs []Graph, visited *[]bool, count *int) { // BFS
-	var queue []int = []int{1}          // 큐
-	BFS(graphs, visited, &queue, count) // BFS
+	var queue []int = []int{1} // 큐
+	for len(queue) > 0 {
+		BFS(graphs, visited, &queue, count) // BFS
+	}
 }
 
 func BFS(graphs []Graph, visited *[]bool, queue *[]int, count *int) { // BFS
@@ -62,10 +64,6 @@ func BFS(graphs []Graph, visited *[]bool, queue *[]int, count *int) { // BFS
 		if !(*visited)[v-1] && !Contain(queue, v) { // 방문 했는지와 큐에 들어가 있는지
 			(*queue) = append(*queue, v) // 없으면 큐에 추가
 		}
-	}
-
-	if len(*queue) > 0 { // 큐가 비어있지 않다면 계속 돌아감
-		BFS(graphs, visited, queue, count)
 	}
 }
 
