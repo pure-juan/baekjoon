@@ -14,7 +14,7 @@ func main() {
 	fmt.Fscanln(scanner, &numOfNodes)
 	var tree [][]int = make([][]int, numOfNodes)
 	for i := 0; i < numOfNodes; i++ {
-		tree[i] = make([]int, 0)
+		tree[i] = []int{}
 	}
 	for i := 0; i < numOfNodes-1; i++ {
 		var firstNode, secondNode int
