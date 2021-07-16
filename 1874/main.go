@@ -13,55 +13,47 @@ func main() {
 
 	var size int
 	fmt.Fscanln(scanner, &size)
-	var originalSequence = make([]int, size)
+	var original = []int{}
 	for i := 0; i < size; i++ {
 		var input int
 		fmt.Fscanln(scanner, &input)
-		originalSequence[i] = input
+		original = append(original, input)
 	}
 
-	var sequence []int = []int{}
-	var result []string = []string{}
-	var current = 0
-	var fail = false
-	for len(originalSequence) > 0 {
-		if len(sequence) > 0 && sequence[len(sequence)-1] == originalSequence[0] {
-			if !Pop(&originalSequence, &sequence, &current, &result) {
-				fail = true
-				break
+	var stack = []int{}
+	var result = []int{}
+	var index = 1
+	for len(original) > 0 {
+		if len(stack) == 0 || original[0] != stack[len(stack)-1] {
+			if Contain(&stack, original[0]) {
+				fmt.Fprintln(writer, "NO")
+				return
 			}
+			stack = append(stack, index)
+			result = append(result, 1)
+			index++
+		} else if original[0] == stack[len(stack)-1] {
+			stack = stack[:len(stack)-1]
+			original = original[1:]
+			result = append(result, -1)
+		}
+	}
+
+	for _, v := range result {
+		if v == 1 {
+			fmt.Fprintln(writer, "+")
 		} else {
-			if !Push(&originalSequence, &sequence, &current, &result) {
-				fail = true
-				break
-			}
-		}
-	}
-
-	if fail {
-		fmt.Fprintf(writer, "NO")
-	} else {
-		for _, v := range result {
-			fmt.Fprintln(writer, v)
+			fmt.Fprintln(writer, "-")
 		}
 	}
 }
 
-func Push(originalSequence *[]int, sequence *[]int, current *int, result *[]string) bool {
-	(*sequence) = append((*sequence), (*current)+1)
-	(*result) = append((*result), "+")
-
-	(*current)++
-	return true
-}
-
-func Pop(originalSequence *[]int, sequence *[]int, currenet *int, result *[]string) bool {
-	if len(*sequence) > 0 {
-		(*sequence) = (*sequence)[:len(*sequence)-1]
+func Contain(arr *[]int, value int) bool {
+	for _, v := range *arr {
+		if v == value {
+			return true
+		}
 	}
-	(*originalSequence) = (*originalSequence)[1:]
 
-	(*result) = append((*result), "-")
-
-	return true
+	return false
 }
