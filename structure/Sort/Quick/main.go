@@ -10,7 +10,8 @@ func main() {
 	writer := bufio.NewWriter(os.Stdout)
 	defer writer.Flush()
 
-	arr := []int{3, 7, 8, 1, 5, 9, 6, 10, 2, 4}
+	// arr := []int{3, 7, 8, 1, 5, 9, 6, 10, 2, 4}
+	arr := []int{26, 32, 76, 48, 38, 96, 12, 68, 50, 94, 7, 22, 34, 10, 58, 65, 87, 97, 2, 6}
 	sort(&arr, 0, len(arr)-1)
 
 	for _, v := range arr {
@@ -20,13 +21,12 @@ func main() {
 }
 
 func sort(arr *[]int, start int, end int) {
-	fmt.Printf("%d %d\n", start, end)
-	if start+1 == end {
+	if start == end {
 		return
 	}
 
 	pivot := start
-	left := start + 1
+	left := start
 	right := end
 
 	for left < right {
@@ -39,7 +39,7 @@ func sort(arr *[]int, start int, end int) {
 				break
 			}
 
-			left++
+			left += 1
 		}
 
 		for {
@@ -47,11 +47,11 @@ func sort(arr *[]int, start int, end int) {
 				break
 			}
 
-			if right <= start {
+			if right < left {
 				break
 			}
 
-			right--
+			right -= 1
 		}
 
 		var temp int
@@ -61,13 +61,12 @@ func sort(arr *[]int, start int, end int) {
 			(*arr)[right] = temp
 		} else {
 			temp = (*arr)[right]
-			(*arr)[pivot] = (*arr)[right]
-			(*arr)[right] = temp
+			(*arr)[right] = (*arr)[pivot]
+			(*arr)[pivot] = temp
+			break
 		}
-
-		fmt.Printf("%v left: %d, right: %d\n", arr, left, right)
 	}
 
 	sort(arr, start, right)
-	sort(arr, right+1, end)
+	sort(arr, left, end)
 }
