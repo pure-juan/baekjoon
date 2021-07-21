@@ -1,4 +1,6 @@
 /**
+* $ go test -bench=.
+*
 * goos: darwin
 * goarch: arm64
 * pkg: github.com/pure-juan/baekjoon/structure/Sort/Quick
