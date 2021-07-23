@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+var temp []int
+
 func main() {
 	writer := bufio.NewWriter(os.Stdout)
 	defer writer.Flush()
@@ -36,39 +38,41 @@ func Merge(arr *[][]int) []int {
 		return (*arr)[0]
 	}
 
-	newArr := [][]int{}
+	originalLength := len(*arr)
 
-	for i := 0; i < len(*arr); i += 2 { // 2개씩 잡아서 정렬
-		temp := []int{}
-		if i+1 == len(*arr) { // 하나 남았으면 그대로 넘기기
+	for i := 0; i < originalLength; i += 2 { // 2개씩 잡아서 정렬
+		temp = []int{}
+		if i+1 == originalLength { // 하나 남았으면 그대로 넘기기
 			temp = append(temp, (*arr)[i]...)
-			newArr = append(newArr, temp)
+			*arr = append(*arr, temp)
 			break
 		}
-		first := (*arr)[i]    // 첫번째
-		second := (*arr)[i+1] // 두번째
+		first := &(*arr)[i]    // 첫번째
+		second := &(*arr)[i+1] // 두번째
 		for {
-			if len(first) == 0 && len(second) == 0 { // 배열에 더이상 없을때
+			if len(*first) == 0 && len(*second) == 0 { // 배열에 더이상 없을때
 				break
 			}
-			if len(first) == 0 && len(second) != 0 { // 첫번째 배열이 비었고 두번째 배열만 있을때
-				temp = append(temp, second[0])
-				second = second[1:]
-			} else if len(second) == 0 && len(first) != 0 { // 위에 반대
-				temp = append(temp, first[0])
-				first = first[1:]
-			} else if first[0] < second[0] { // 첫번째 배열에 첫번째 아이템이 두번째 배열에 첫번째 아이템보다 작을때
-				temp = append(temp, first[0])
-				first = first[1:]
+			if len(*first) == 0 && len(*second) != 0 { // 첫번째 배열이 비었고 두번째 배열만 있을때
+				temp = append(temp, (*second)[0])
+				*second = (*second)[1:]
+			} else if len(*second) == 0 && len(*first) != 0 { // 위에 반대
+				temp = append(temp, (*first)[0])
+				*first = (*first)[1:]
+			} else if (*first)[0] < (*second)[0] { // 첫번째 배열에 첫번째 아이템이 두번째 배열에 첫번째 아이템보다 작을때
+				temp = append(temp, (*first)[0])
+				*first = (*first)[1:]
 			} else { // 위에 반대
-				temp = append(temp, second[0])
-				second = second[1:]
+				temp = append(temp, (*second)[0])
+				*second = (*second)[1:]
 			}
 		}
-		newArr = append(newArr, temp)
+		*arr = append(*arr, temp)
 	}
 
-	fmt.Printf("arr: %v\n", newArr)
+	*arr = (*arr)[originalLength:]
 
-	return Merge(&newArr)
+	fmt.Printf("arr: %v\n", arr)
+
+	return Merge(arr)
 }
