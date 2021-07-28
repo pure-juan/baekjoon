@@ -7,7 +7,6 @@ public class Main {
     // [7, 6] [5, 8]
     // 합치는 넘
     static void merge(int[] array, int start, int middle, int end) {
-
         int i = start;
         int j = middle;
 
@@ -21,15 +20,10 @@ public class Main {
                 j++;
             }
             k++;
-//            for (int a = 0; a < array.length; a++) {
-//                System.out.printf("%d ", merged[a]);
-//            }
-//            System.out.println();
         }
-//        System.out.println(i + " " + j);
-        // 남아있는 놈 다 넣기
-        for (int a = (i == middle) ? j : i; a < (i == middle ? end : middle); a++) {
-            System.out.println(a);
+        int a = (i == middle) ? j : i;
+        int criteria = i == middle ? end : middle;
+        for (; a < criteria; a++) {
             merged[k] = array[a];
             k++;
         }
@@ -38,17 +32,17 @@ public class Main {
             array[l] = merged[l];
         }
     }
-    
+
     static void split(int[] array, int start, int end) {
-        while (start < end) {
+        if (end - start > 1) {
             split(array, start, (start + end)/2);
-            split(array,  (start + end)/2 + 1, end);
-            merge(array, start, (start + end)/2, end);
+            split(array,  (start + end)/2, end);
         }
+        merge(array, start, (start + end)/2, end);
     }
 
     public static void main(String[] args) {
-        int[] array = new int[]{7, 6, 5, 8};
+        int[] array = new int[]{26, 32, 76, 48, 38, 96, 12, 68, 50, 94, 7, 22, 34, 10, 58, 65, 87, 97, 2, 6};
         merged = new int[array.length];
 
         split(array, 0, array.length);
