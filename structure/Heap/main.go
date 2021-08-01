@@ -39,11 +39,11 @@ func (heap *Heap) RemoveRoot() int { // Root 삭제
 			// 오른쪽 자식이 더 크면 오른쪽 자식으로 변경
 			child += 1
 		}
-		// 위 둘중 더 큰 자식 보다 마지막 노드가 크면 종료
+		// 위 둘중 더 큰 자식 보다 루트 노드(마지막 노드)가 크면 종료
 		if temp >= heap.arr[child] {
 			break
 		} else {
-			// 위 둘중 더 큰 자식 보다 마지막 노드가 작으면 자리 변경
+			// 위 둘중 더 큰 자식 보다 루트 노드(마지막 노드)가 작으면 자리 변경
 			heap.arr[parent] = heap.arr[child]
 			parent = child
 			// 한단계 아래로 이동
